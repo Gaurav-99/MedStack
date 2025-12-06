@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getQuestions } from '../features/questions/questionSlice';
 import { Award, BookOpen, Clock, MapPin, MessageSquare, Star, ThumbsUp, User } from 'lucide-react';
-import authService from '../features/auth/authService'; // Direct service to get full user details if needed, or rely on state
+import EditProfileModal from '../components/EditProfileModal';
 
 const Profile = () => {
     const { user } = useSelector((state) => state.auth);
@@ -11,6 +11,7 @@ const Profile = () => {
     const dispatch = useDispatch();
 
     const [activeTab, setActiveTab] = useState('summary');
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -70,7 +71,10 @@ const Profile = () => {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col gap-2">
-                        <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition text-sm font-medium">
+                        <button
+                            onClick={() => setIsEditModalOpen(true)}
+                            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition text-sm font-medium"
+                        >
                             Edit Profile
                         </button>
                         <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm font-medium">
@@ -79,6 +83,11 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
+            <EditProfileModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {/* Left Sidebar - Stats */}

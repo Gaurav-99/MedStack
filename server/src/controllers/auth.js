@@ -119,3 +119,34 @@ const sendTokenResponse = (user, statusCode, res) => {
             }
         });
 };
+
+// @desc    Update user profile
+// @route   PUT /api/v1/auth/profile
+// @access  Private
+exports.updateProfile = async (req, res, next) => {
+    try {
+        const { name, bio, school, year } = req.body;
+
+        const fieldsToUpdate = {};
+        if (name) fieldsToUpdate.name = name;
+        if (bio !== undefined) fieldsToUpdate.bio = bio;
+        if (school) fieldsToUpdate.school = school;
+        if (year) fieldsToUpdate.year = year;
+
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            fieldsToUpdate,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (err) {
+        next(err);
+    }
+};
