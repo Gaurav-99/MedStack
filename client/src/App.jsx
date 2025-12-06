@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
+import AnalyticsTracker from './components/AnalyticsTracker';
+import { PageTitleUpdater } from './hooks/usePageTitle';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AskQuestion from './pages/AskQuestion';
 import QuestionDetail from './pages/QuestionDetail';
 import Profile from './pages/Profile';
+import StatsPage from './pages/StatsPage';
 
 // Placeholder pages
 const Tags = () => <div className="container mx-auto p-4">Tags Page (Coming Soon)</div>;
@@ -14,6 +17,8 @@ function App() {
   return (
     <Router>
       <div className='min-h-screen bg-gray-50 text-gray-800 font-sans'>
+        <AnalyticsTracker />
+        <PageTitleUpdater />
         <Header />
         <main className='py-6'>
           <Routes>
@@ -25,6 +30,7 @@ function App() {
             <Route path='/question/:id' element={<QuestionDetail />} />
             <Route path='/tags' element={<Tags />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/stats' element={<StatsPage />} />
           </Routes>
         </main>
         <footer className='bg-white border-t mt-auto py-6 text-center text-sm text-gray-500'>

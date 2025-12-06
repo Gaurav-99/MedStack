@@ -27,6 +27,7 @@ const tags = require('./routes/tags');
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/questions', questions);
 app.use('/api/v1/tags', tags);
+app.use('/api/v1/analytics', require('./routes/analytics'));
 
 app.get('/', (req, res) => {
     res.send('MedStack API is running...');
