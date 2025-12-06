@@ -13,9 +13,9 @@ const initialState = {
 // Get all questions
 export const getQuestions = createAsyncThunk(
     'questions/getAll',
-    async (_, thunkAPI) => {
+    async (query, thunkAPI) => {
         try {
-            return await questionService.getQuestions();
+            return await questionService.getQuestions(query);
         } catch (error) {
             const message =
                 (error.response &&
