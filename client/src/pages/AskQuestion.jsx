@@ -40,6 +40,7 @@ function AskQuestion() {
     );
 
     const addTag = (tag) => {
+        // Allow adding if not already selected (check both ID and name for new tags)
         if (selectedTags.length < 5 && !selectedTags.find(t => t._id === tag._id)) {
             setSelectedTags([...selectedTags, tag]);
             setTagInput('');
@@ -67,8 +68,9 @@ function AskQuestion() {
             }
         }
 
-        const tagIds = selectedTags.map(tag => tag._id);
-        dispatch(createQuestion({ title, body, tags: tagIds }));
+        // Send IDs for existing tags, or the name string for new tags
+        const tagPayload = selectedTags.map(tag => tag.isNew ? tag.name : tag._id);
+        dispatch(createQuestion({ title, body, tags: tagPayload }));
         navigate('/');
     };
 
@@ -149,7 +151,7 @@ function AskQuestion() {
                             />
 
                             {/* Tag Suggestions */}
-                            {showTagSuggestions && tagInput && filteredTags.length > 0 && (
+                            {showTagSuggestions && tagInput && (
                                 <div className="absolute z-10 w-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto">
                                     {filteredTags.slice(0, 10).map(tag => (
                                         <button
@@ -166,6 +168,16 @@ function AskQuestion() {
                                             </div>
                                         </button>
                                     ))}
+                                    {/* Option to create new tag if no exact match */}
+                                    {!filteredTags.find(t => t.name.toLowerCase() === tagInput.toLowerCase()) && (
+                                        <button
+                                            type="button"
+                                            onClick={() => addTag({ _id: tagInput, name: tagInput, isNew: true })}
+                                            className="w-full text-left px-4 py-2 hover:bg-blue-50 text-blue-600 font-medium border-t"
+                                        >
+                                            Create new tag: "{tagInput}"
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </div>

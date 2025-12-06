@@ -94,17 +94,44 @@ exports.getQuestion = async (req, res, next) => {
 // @desc    Create new question
 // @route   POST /api/v1/questions
 // @access  Private
+// @desc    Create new question
+// @route   POST /api/v1/questions
+// @access  Private
 exports.createQuestion = async (req, res, next) => {
     try {
         // Add user to req.body
         req.body.author = req.user.id;
 
-        // TODO: Handle Tags (convert strings to ObjectIDs, create if not exist?)
-        // For MVP, assuming client sends array of Tag IDs or we implement tag creation logic here.
-        // User requested "Tag pages", "Tag system".
-        // I will assume for now simplest: client sends IDs or I handle lookup.
-        // Let's assume client sends IDs for now to keep it strict, or implement a "findOrCreate" for tags logic.
-        // I'll skip complex tag logic for this exact step and assume body has correct format.
+        // Handle Tags: Array of IDs or potential new tag strings
+        if (req.body.tags && Array.isArray(req.body.tags)) {
+            const processedTags = [];
+            const Tag = require('../models/Tag'); // Lazy load or move to top
+
+            for (const tagInput of req.body.tags) {
+                // If it looks like a valid Mongo ObjectID, assume it exists (or we could verify)
+                if (tagInput.match(/^[0-9a-fA-F]{24}$/)) {
+                    processedTags.push(tagInput);
+                } else {
+                    // It's a new tag string (or existing name sent as string)
+                    // Check if exists by name (case insensitive usually via regex or slug)
+                    // Slugify logic is in model pre-save, so we can just send name
+                    // But to avoid duplicates, let's trying finding by name/slug first.
+                    // Doing a loose check here for simplicity of MVP + dynamic tags
+
+                    // Simple find one by name regex
+                    let existingTag = await Tag.findOne({ name: { $regex: new RegExp(`^${tagInput}$`, 'i') } });
+
+                    if (existingTag) {
+                        processedTags.push(existingTag._id);
+                    } else {
+                        // Create new tag
+                        const newTag = await Tag.create({ name: tagInput, description: 'User created tag' });
+                        processedTags.push(newTag._id);
+                    }
+                }
+            }
+            req.body.tags = processedTags;
+        }
 
         const question = await Question.create(req.body);
 
