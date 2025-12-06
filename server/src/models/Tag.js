@@ -20,9 +20,10 @@ const TagSchema = new mongoose.Schema({
 });
 
 // Create tag slug from the name
-TagSchema.pre('save', function (next) {
-    this.slug = slugify(this.name, { lower: true });
-    next();
+TagSchema.pre('save', async function () {
+    if (this.name) {
+        this.slug = slugify(this.name, { lower: true });
+    }
 });
 
 module.exports = mongoose.model('Tag', TagSchema);

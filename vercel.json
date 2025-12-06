@@ -3,7 +3,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "/server/api/index.js"
+            "destination": "/api/index.js"
         },
         {
             "source": "/(.*)",
@@ -11,7 +11,7 @@
         }
     ],
     "functions": {
-        "server/api/index.js": {
+        "api/index.js": {
             "includeFiles": "server/**"
         }
     }
