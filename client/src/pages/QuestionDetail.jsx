@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
-import { getQuestion, voteQuestion, reset, addAnswer } from '../features/questions/questionSlice';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { getQuestion, voteQuestion, reset, addAnswer, deleteQuestion, deleteAnswer } from '../features/questions/questionSlice';
 import ReactMarkdown from 'react-markdown';
-import { ThumbsUp, ThumbsDown, CheckCircle } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, CheckCircle, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 function QuestionDetail() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
     const { question, isLoading, isError, message } = useSelector(
@@ -29,6 +30,19 @@ function QuestionDetail() {
         dispatch(voteQuestion({ questionId: id, type }));
     };
 
+    const onDeleteQuestion = () => {
+        if (window.confirm('Are you sure you want to delete this question?')) {
+            dispatch(deleteQuestion(id));
+            navigate('/');
+        }
+    };
+
+    const onDeleteAnswer = (answerId) => {
+        if (window.confirm('Are you sure you want to delete this answer?')) {
+            dispatch(deleteAnswer({ questionId: id, answerId }));
+        }
+    };
+
     const onSubmitAnswer = (e) => {
         e.preventDefault();
         if (!user) return alert("Login to answer");
@@ -48,9 +62,19 @@ function QuestionDetail() {
                     <Link to="/ask" className="btn btn-primary bg-blue-600 text-white px-3 py-2 rounded h-fit text-sm">Ask Question</Link>
                 </div>
 
-                <div className="flex space-x-4 text-sm text-gray-500">
+                <div className="flex space-x-4 text-sm text-gray-500 items-center">
                     <span>Asked {new Date(question.createdAt).toLocaleDateString()}</span>
                     <span>Viewed {question.viewCount} times</span>
+                    {user && question.author && user._id === question.author._id && (
+                        <button
+                            onClick={onDeleteQuestion}
+                            className="flex items-center text-red-500 hover:text-red-700 font-medium"
+                            title="Delete Question"
+                        >
+                            <Trash size={16} className="mr-1" />
+                            Delete
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -109,7 +133,19 @@ function QuestionDetail() {
                                     <div className="prose text-gray-800 mb-4">
                                         <ReactMarkdown>{answer.body}</ReactMarkdown>
                                     </div>
-                                    <div className="flex justify-end">
+                                    <div className="flex justify-between items-center mt-2">
+                                        <div className="flex space-x-2">
+                                            {user && answer.author && user._id === answer.author._id && (
+                                                <button
+                                                    onClick={() => onDeleteAnswer(answer._id)}
+                                                    className="flex items-center text-red-500 hover:text-red-700 text-sm font-medium"
+                                                    title="Delete Answer"
+                                                >
+                                                    <Trash size={14} className="mr-1" />
+                                                    Delete
+                                                </button>
+                                            )}
+                                        </div>
                                         <div className="text-sm text-gray-500">
                                             answered {new Date(answer.createdAt).toLocaleDateString()} by <span className="text-blue-600">{answer.author?.name || 'User'}</span>
                                         </div>

@@ -103,6 +103,44 @@ export const addAnswer = createAsyncThunk(
     }
 );
 
+// Delete question
+export const deleteQuestion = createAsyncThunk(
+    'questions/delete',
+    async (id, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+            return await questionService.deleteQuestion(id, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.error) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+// Delete answer
+export const deleteAnswer = createAsyncThunk(
+    'questions/deleteAnswer',
+    async ({ questionId, answerId }, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+            return await questionService.deleteAnswer(questionId, answerId, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.error) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 export const questionSlice = createSlice({
     name: 'question',
     initialState,
@@ -166,6 +204,28 @@ export const questionSlice = createSlice({
                     // Ideally re-fetch question to populate author.
                     // For now, I'll just push the raw answer, might miss populated author.
                     state.question.answers.unshift(action.payload.data);
+                }
+            })
+            .addCase(deleteQuestion.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.question = null; // Clear if on detail page
+            })
+            .addCase(deleteAnswer.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                // Since this thunk doesn't return the answer ID in payload.data (is {}),
+                // we technically need the ID from meta.arg to filter it out.
+                // Or I can re-fetch question.
+                // Let's modify the controller to return answerId or just filter here if I had it.
+                // For MVP, if on question page, triggering a re-fetch is safest or reloading.
+                // But Redux state update is better.
+                // Let's just force reload in component or implement properly.
+                // Actually, I can use action.meta.arg.answerId
+                if (state.question && state.question.answers) {
+                    state.question.answers = state.question.answers.filter(
+                        (answer) => answer._id !== action.meta.arg.answerId
+                    );
                 }
             });
     },

@@ -48,12 +48,36 @@ const addAnswer = async (questionId, answerData, token) => {
     return response.data;
 }
 
+// Delete question
+const deleteQuestion = async (questionId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const response = await axios.delete(API_URL + questionId, config);
+    return response.data;
+}
+
+// Delete answer
+const deleteAnswer = async (questionId, answerId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const response = await axios.delete(API_URL + questionId + '/answers/' + answerId, config);
+    return response.data;
+}
+
 const questionService = {
     getQuestions,
     createQuestion,
     getQuestion,
     voteQuestion,
-    addAnswer
+    addAnswer,
+    deleteQuestion,
+    deleteAnswer
 };
 
 export default questionService;

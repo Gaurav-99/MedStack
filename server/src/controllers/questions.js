@@ -212,3 +212,59 @@ exports.voteQuestion = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Delete question
+// @route   DELETE /api/v1/questions/:id
+// @access  Private
+exports.deleteQuestion = async (req, res, next) => {
+    try {
+        const question = await Question.findById(req.params.id);
+
+        if (!question) {
+            return res.status(404).json({ success: false, error: 'Question not found' });
+        }
+
+        // Make sure user is question owner
+        if (question.author.toString() !== req.user.id) {
+            return res.status(401).json({ success: false, error: 'Not authorized to delete this question' });
+        }
+
+        // Delete associated answers first
+        await Answer.deleteMany({ question: req.params.id });
+        await question.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Delete answer
+// @route   DELETE /api/v1/questions/:id/answers/:answerId
+// @access  Private
+exports.deleteAnswer = async (req, res, next) => {
+    try {
+        const answer = await Answer.findById(req.params.answerId);
+
+        if (!answer) {
+            return res.status(404).json({ success: false, error: 'Answer not found' });
+        }
+
+        // Make sure user is answer owner
+        if (answer.author.toString() !== req.user.id) {
+            return res.status(401).json({ success: false, error: 'Not authorized to delete this answer' });
+        }
+
+        await answer.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch (err) {
+        next(err);
+    }
+};
