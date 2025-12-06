@@ -60,7 +60,15 @@ const createTags = async () => {
             { name: 'USMLE', description: 'United States Medical Licensing Exam' },
             { name: 'Clinical-Rotation', description: 'Medical student training' },
             { name: 'Case-Discussion', description: 'Patient case analysis' },
-            { name: 'Study-Tips', description: 'Learning strategies for medical students' }
+            { name: 'Study-Tips', description: 'Learning strategies for medical students' },
+            { name: 'Cardiovascular', description: 'Relating to heart and blood vessels' },
+            { name: 'Exercise', description: 'Physical activity and fitness' },
+            { name: 'Neuroanatomy', description: 'Anatomy of the nervous system' },
+            { name: 'Respiratory', description: 'Relating to breathing and lungs' },
+            { name: 'Drugs', description: 'Medications and substances' },
+            { name: 'Toxins', description: 'Poisonous substances' },
+            { name: 'Enzymes', description: 'Biological catalysts' },
+            { name: 'Kinetics', description: 'Rate of chemical reactions' }
         ];
 
         // Delete existing tags first to avoid duplicates
