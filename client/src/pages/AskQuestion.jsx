@@ -88,6 +88,12 @@ function AskQuestion() {
                 </p>
             </div>
 
+            {isError && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 text-red-700">
+                    {message}
+                </div>
+            )}
+
             <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow-sm border space-y-6">
                 <div>
                     <label htmlFor='title' className='block font-bold text-gray-700 mb-2'>Title</label>

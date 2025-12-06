@@ -94,9 +94,6 @@ exports.getQuestion = async (req, res, next) => {
 // @desc    Create new question
 // @route   POST /api/v1/questions
 // @access  Private
-// @desc    Create new question
-// @route   POST /api/v1/questions
-// @access  Private
 exports.createQuestion = async (req, res, next) => {
     try {
         // Add user to req.body
