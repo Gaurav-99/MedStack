@@ -3,8 +3,8 @@ import axios from 'axios';
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1') + '/questions/';
 
 // Get all questions
-const getQuestions = async () => {
-    const response = await axios.get(API_URL);
+const getQuestions = async (query = '') => {
+    const response = await axios.get(API_URL + (query ? '?' + query : ''));
     return response.data;
 };
 

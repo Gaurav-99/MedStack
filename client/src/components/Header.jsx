@@ -35,10 +35,10 @@ const Header = () => {
                             <Link to='/ask' className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition'>
                                 Ask Question
                             </Link>
-                            <div className='flex items-center space-x-2 text-gray-700 cursor-pointer' title={user.name}>
+                            <Link to='/profile' className='flex items-center space-x-2 text-gray-700 cursor-pointer hover:text-blue-600' title={user.name}>
                                 <User size={20} />
                                 <span className='font-medium'>{user.name}</span>
-                            </div>
+                            </Link>
                             <button onClick={onLogout} className='flex items-center text-gray-600 hover:text-red-500'>
                                 <LogOut size={20} />
                             </button>
