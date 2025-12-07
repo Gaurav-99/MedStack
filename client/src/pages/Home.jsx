@@ -31,7 +31,7 @@ function Home() {
     return (
         <div className='container mx-auto px-4 max-w-4xl'>
             <div className='flex justify-between items-center mb-6'>
-                <h1 className='text-3xl font-bold text-gray-800'>Top Questions</h1>
+                <h1 className='text-3xl font-bold text-gray-800'>Medical Feed</h1>
                 <Link to='/ask' className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition'>
                     Ask Question
                 </Link>

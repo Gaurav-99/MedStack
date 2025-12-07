@@ -24,7 +24,7 @@ const Header = () => {
                         MedStack
                     </Link>
                     <nav className='hidden md:flex space-x-4'>
-                        <Link to='/' className='text-gray-600 hover:text-blue-500'>Questions</Link>
+                        <Link to='/' className='text-gray-600 hover:text-blue-500'>Feed</Link>
                         <Link to='/tags' className='text-gray-600 hover:text-blue-500'>Tags</Link>
                     </nav>
                 </div>
@@ -64,7 +64,7 @@ const Header = () => {
             {/* Mobile Menu */}
             {isMenuOpen && (
                 <div className='md:hidden bg-gray-50 border-t px-4 py-2 space-y-2'>
-                    <Link to='/' className='block text-gray-700'>Questions</Link>
+                    <Link to='/' className='block text-gray-700'>Feed</Link>
                     {user ? (
                         <>
                             <Link to='/ask' className='block text-blue-600'>Ask Question</Link>
