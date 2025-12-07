@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getQuestions, reset } from '../features/questions/questionSlice';
 import { MessageCircle, ThumbsUp, Eye } from 'lucide-react';
 
+import { formatDate } from '../utils/dateUtils';
+
 function Home() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -81,7 +83,7 @@ function Home() {
                                                     <span className="text-blue-500">{question.author.name}</span>
                                                 </>
                                             )}
-                                            <span>asked {new Date(question.createdAt).toLocaleDateString()}</span>
+                                            <span>asked {formatDate(question.createdAt)}</span>
                                         </div>
                                     </div>
                                 </div>

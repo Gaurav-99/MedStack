@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getQuestion, voteQuestion, reset, addAnswer, deleteQuestion, deleteAnswer } from '../features/questions/questionSlice';
 import ReactMarkdown from 'react-markdown';
 import { ThumbsUp, ThumbsDown, CheckCircle, Trash } from 'lucide-react';
+import { formatDate } from '../utils/dateUtils';
 import { useState } from 'react';
 
 function QuestionDetail() {
@@ -63,7 +64,7 @@ function QuestionDetail() {
                 </div>
 
                 <div className="flex space-x-4 text-sm text-gray-500 items-center">
-                    <span>Asked {new Date(question.createdAt).toLocaleDateString()}</span>
+                    <span>Asked {formatDate(question.createdAt)}</span>
                     <span>Viewed {question.viewCount} times</span>
                     {user && question.author && user._id === question.author._id && (
                         <button
@@ -107,7 +108,7 @@ function QuestionDetail() {
                             ))}
                         </div>
                         <div className="bg-blue-50 p-3 rounded text-sm min-w-[200px]">
-                            <span className="text-gray-500 block mb-1">asked {new Date(question.createdAt).toLocaleDateString()}</span>
+                            <span className="text-gray-500 block mb-1">asked {formatDate(question.createdAt)}</span>
                             <div className="flex items-center space-x-2">
                                 <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-blue-800 text-xs font-bold">
                                     {question.author?.name ? question.author.name[0] : 'U'}
@@ -147,7 +148,7 @@ function QuestionDetail() {
                                             )}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            answered {new Date(answer.createdAt).toLocaleDateString()} by <span className="text-blue-600">{answer.author?.name || 'User'}</span>
+                                            answered {formatDate(answer.createdAt)} by <span className="text-blue-600">{answer.author?.name || 'User'}</span>
                                         </div>
                                     </div>
                                 </div>
