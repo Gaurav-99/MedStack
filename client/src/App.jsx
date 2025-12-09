@@ -9,6 +9,7 @@ import AskQuestion from './pages/AskQuestion';
 import QuestionDetail from './pages/QuestionDetail';
 import Profile from './pages/Profile';
 import StatsPage from './pages/StatsPage';
+import About from './pages/About';
 
 // Placeholder pages
 const Tags = () => <div className="container mx-auto p-4">Tags Page (Coming Soon)</div>;
@@ -30,7 +31,9 @@ function App() {
             <Route path='/question/:id' element={<QuestionDetail />} />
             <Route path='/tags' element={<Tags />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/profile' element={<Profile />} />
             <Route path='/stats' element={<StatsPage />} />
+            <Route path='/about' element={<About />} />
           </Routes>
         </main>
         <footer className='bg-white border-t mt-auto py-6 text-center text-sm text-gray-500'>
