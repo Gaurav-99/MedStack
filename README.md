@@ -4,6 +4,8 @@ MedStack is a Stack Overflow-style Q&A platform tailored for medical students. I
 
 Built with the MERN Stack (MongoDB, Express, React, Node.js).
 
+Built using Google's Antigravity.
+
 ## Features
 
 - **Authentication**: JWT-based auth with Register/Login (Students, Admins).
